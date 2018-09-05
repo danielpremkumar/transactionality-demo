@@ -13,13 +13,15 @@ import java.util.List;
 @Service
 public class UserService {
 
+    static Logger logger = Logger.getLogger(UserService.class.getName());
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Transactional
     public void insert(List<User> users) {
         for (User user : users) {
-            Logger("Inserting User with the Name: " + user.getName());
+            logger.info("Inserting User with the Name: " + user.getName());
             jdbcTemplate.update("insert into USER(Name, Dept, Salary) values (?,?,?)",
                     preparedStatement -> {
                         preparedStatement.setString(1,user.getName());
@@ -30,7 +32,7 @@ public class UserService {
     }
 
     public List<User> getUsers() {
-        System.out.println("Retrieving all users....");
+        logger.info("Retrieving all users....");
         return jdbcTemplate.query("select * from USER",
                 (resultSet, i) -> new User( resultSet.getString("Name"), resultSet.getString("Dept"),  resultSet.getLong("Salary")));
     }
