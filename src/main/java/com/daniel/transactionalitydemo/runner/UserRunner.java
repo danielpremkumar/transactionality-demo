@@ -2,15 +2,17 @@ package com.daniel.transactionalitydemo.runner;
 
 import com.daniel.transactionalitydemo.model.User;
 import com.daniel.transactionalitydemo.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Component
 public class UserRunner implements CommandLineRunner {
+
+    static Logger logger = Logger.getLogger(UserService.class.getName());
 
     @Autowired
     private UserService userService;
@@ -24,9 +26,9 @@ public class UserRunner implements CommandLineRunner {
             User user4 = new User("Jack", "Business", 6000L);
             userService.insert(Arrays.asList(user1, user2, user3, user4));
         } catch (RuntimeException exception) {
-            System.out.println("Exception occurred..." + exception);
+            logger.error("Exception occurred..." + exception);
         }
-        System.out.println(userService.getUsers());
+        logger.info(userService.getUsers());
 
     }
 }
